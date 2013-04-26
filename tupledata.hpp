@@ -37,6 +37,7 @@ public:
 		TupleData(const T & _p1, const REST & ... _rest);
 
 		inline void Get(T & _p1, REST & ... _rest) const;
+		inline const T & Get() const;
 
 private:
 		T mMember;
@@ -59,21 +60,13 @@ public:
 		TupleData(const TupleDummyType & _p1);
 
 		inline void Get(TupleDummyType & _p1) const;
+		inline const TupleDummyType & Get() const;
+
+private:
+		static const TupleDummyType mMember = TupleDummyType();
 };
 
-// implementation
-
-TupleData<TupleDummyType>::TupleData()
-{
-}
-
-TupleData<TupleDummyType>::TupleData(const TupleDummyType & _p1)
-{
-}
-
-inline void TupleData<TupleDummyType>::Get(TupleDummyType & _p1) const
-{
-}
+// TupleData implementation
 
 template <class T, class ... REST>
 TupleData<T, REST...>::TupleData()
@@ -92,6 +85,31 @@ inline void TupleData<T, REST...>::Get(T & _p1, REST & ... _rest) const
 {
 		_p1 = mMember;
 		TupleDataSuper::Get(_rest...);
+}
+
+template <class T, class ... REST>
+inline const T & TupleData<T, REST...>::Get() const
+{
+		return mMember;
+}
+
+// TupleData<TupleDummyType> implementation
+
+TupleData<TupleDummyType>::TupleData()
+{
+}
+
+TupleData<TupleDummyType>::TupleData(const TupleDummyType & _p1)
+{
+}
+
+inline void TupleData<TupleDummyType>::Get(TupleDummyType & _p1) const
+{
+}
+
+inline const TupleDummyType & TupleData<TupleDummyType>::Get() const
+{
+		return mMember;
 }
 
 #endif // TUPLEDATA_H

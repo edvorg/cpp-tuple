@@ -40,5 +40,9 @@ int main(int _argc, char ** _argv)
 		std::cout << tmp2 << std::endl;
 		std::cout << tmp3 << std::endl;
 
+		TupleData<int, char, TupleDummyType> t2(1 , 'a', 3);
+
+		std::cout << t2.Get();
+
 		return 0;
 }

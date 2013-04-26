@@ -1,22 +1,22 @@
 /*
 
-tuple GPL Source Code
-Copyright (C) 2013 Edward Knyshov
+  tuple GPL Source Code
+  Copyright (C) 2013 Edward Knyshov
 
-This file is part of the tuple GPL Source Code (tuple Source Code).
+  This file is part of the tuple GPL Source Code (tuple Source Code).
 
-tuple Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  tuple Source Code is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-tuple Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+  tuple Source Code is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with tuple Source Code. If not, see <http://www.gnu.org/licenses/>
+  You should have received a copy of the GNU General Public License
+  along with tuple Source Code. If not, see <http://www.gnu.org/licenses/>
 
 */
 
@@ -34,7 +34,7 @@ public:
 		TupleData();
 		TupleData(const T & _p1, const REST & ... _rest);
 
-		void Get(T & _p1, REST & ... _rest);
+		inline void Get(T & _p1, REST & ... _rest);
 
 private:
 		T mMember;
@@ -56,7 +56,7 @@ public:
 		TupleData();
 		TupleData(const TupleDummyType & _p1);
 
-		void Get(TupleDummyType & _p1);
+		inline void Get(TupleDummyType & _p1);
 };
 
 // implementation
@@ -69,7 +69,7 @@ TupleData<TupleDummyType>::TupleData(const TupleDummyType & _p1)
 {
 }
 
-void TupleData<TupleDummyType>::Get(TupleDummyType & _p1)
+inline void TupleData<TupleDummyType>::Get(TupleDummyType & _p1)
 {
 }
 
@@ -86,7 +86,7 @@ TupleData<T, REST...>::TupleData(const T & _p1, const REST & ... _rest):
 }
 
 template <class T, class ... REST>
-void TupleData<T, REST...>::Get(T & _p1, REST & ... _rest)
+inline void TupleData<T, REST...>::Get(T & _p1, REST & ... _rest)
 {
 		_p1 = mMember;
 		TupleData<REST...>::Get(_rest...);

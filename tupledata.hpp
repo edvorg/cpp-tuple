@@ -31,10 +31,12 @@ template <class T, class ... REST>
 class TupleData : public TupleData<REST...>
 {
 public:
+		using TupleDataSuper = TupleData<REST...>;
+
 		TupleData();
 		TupleData(const T & _p1, const REST & ... _rest);
 
-		inline void Get(T & _p1, REST & ... _rest);
+		inline void Get(T & _p1, REST & ... _rest) const;
 
 private:
 		T mMember;
@@ -56,7 +58,7 @@ public:
 		TupleData();
 		TupleData(const TupleDummyType & _p1);
 
-		inline void Get(TupleDummyType & _p1);
+		inline void Get(TupleDummyType & _p1) const;
 };
 
 // implementation
@@ -69,7 +71,7 @@ TupleData<TupleDummyType>::TupleData(const TupleDummyType & _p1)
 {
 }
 
-inline void TupleData<TupleDummyType>::Get(TupleDummyType & _p1)
+inline void TupleData<TupleDummyType>::Get(TupleDummyType & _p1) const
 {
 }
 
@@ -81,15 +83,15 @@ TupleData<T, REST...>::TupleData()
 template <class T, class ... REST>
 TupleData<T, REST...>::TupleData(const T & _p1, const REST & ... _rest):
 		mMember(_p1),
-		TupleData<REST...>(_rest...)
+		TupleDataSuper(_rest...)
 {
 }
 
 template <class T, class ... REST>
-inline void TupleData<T, REST...>::Get(T & _p1, REST & ... _rest)
+inline void TupleData<T, REST...>::Get(T & _p1, REST & ... _rest) const
 {
 		_p1 = mMember;
-		TupleData<REST...>::Get(_rest...);
+		TupleDataSuper::Get(_rest...);
 }
 
 #endif // TUPLEDATA_H

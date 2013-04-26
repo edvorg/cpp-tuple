@@ -34,7 +34,7 @@ public:
 		Tuple();
 		Tuple(const REST & ... _rest);
 
-		inline void Get(REST & ... _rest);
+		inline void Get(REST & ... _rest) const;
 
 private:
 		TupleData<REST..., TupleDummyType> mData;
@@ -54,7 +54,7 @@ Tuple<REST...>::Tuple(const REST & ... _rest):
 }
 
 template <class ... REST>
-inline void Tuple<REST...>::Get(REST & ... _rest)
+inline void Tuple<REST...>::Get(REST & ... _rest) const
 {
 		TupleDummyType tmp;
 		mData.Get(_rest..., tmp);

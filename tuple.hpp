@@ -23,43 +23,19 @@
 #ifndef TUPLE_H
 #define TUPLE_H
 
-#include "tupledata.hpp"
+#include "tupleimpl.hpp"
 
-// declaration
-
-template <class ... REST>
-class Tuple
+namespace tuple
 {
-public:
-		Tuple();
-		Tuple(const REST & ... _rest);
-
-		inline void Get(REST & ... _rest) const;
-
-private:
-		TupleData<REST..., TupleDummyType> mData;
-};
-
-// implementation
-
-template <class ... REST>
-Tuple<REST...>::Tuple()
-{
-}
-
-template <class ... REST>
-Tuple<REST...>::Tuple(const REST & ... _rest):
-		mData(_rest..., TupleDummyType())
-{
-}
-
-template <class ... REST>
-inline void Tuple<REST...>::Get(REST & ... _rest) const
-{
-		TupleDummyType tmp;
-		mData.Get(_rest..., tmp);
-}
 
 // some usefull functions
+
+template <class ... REST>
+Tuple<REST...> MakeTuple(REST ... _rest)
+{
+		return Tuple<REST...>(_rest...);
+}
+
+} // namespace tuple
 
 #endif // TUPLE_H

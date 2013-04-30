@@ -1,22 +1,22 @@
 /*
 
-tuple GPL Source Code
-Copyright (C) 2013 Edward Knyshov
+  tuple GPL Source Code
+  Copyright (C) 2013 Edward Knyshov
 
-This file is part of the tuple GPL Source Code (tuple Source Code).
+  This file is part of the tuple GPL Source Code (tuple Source Code).
 
-tuple Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+  tuple Source Code is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-tuple Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+  tuple Source Code is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with tuple Source Code. If not, see <http://www.gnu.org/licenses/>
+  You should have received a copy of the GNU General Public License
+  along with tuple Source Code. If not, see <http://www.gnu.org/licenses/>
 
 */
 
@@ -28,21 +28,41 @@ along with tuple Source Code. If not, see <http://www.gnu.org/licenses/>
 
 int main(int _argc, char ** _argv)
 {
-		Tuple<int, char, std::string> t1(1, '!', std::string("test"));
+		using namespace tuple;
 
-		int tmp1;
-		char tmp2;
-		std::string tmp3;
+		auto t1 = MakeTuple(1, 'a', 3.14, std::string("hello world"));
 
-		t1.Get(tmp1, tmp2, tmp3);
+		std::cout << t1.Get() << std::endl;
+		std::cout << t1.Next()->Get() << std::endl;
+		std::cout << t1.Next()->Next()->Get() << std::endl;
+		std::cout << t1.Next()->Next()->Next()->Get() << std::endl;
 
-		std::cout << tmp1 << std::endl;
-		std::cout << tmp2 << std::endl;
-		std::cout << tmp3 << std::endl;
+		int v0;
+		char v1;
+		double v2;
+		std::string v3;
 
-		TupleData<int, char, TupleDummyType> t2(1 , 'a', 3);
+		t1.Get(v0, v1, v2, v3);
+		std::cout << v0 << std::endl;
+		std::cout << v1 << std::endl;
+		std::cout << v2 << std::endl;
+		std::cout << v3 << std::endl;
 
-		std::cout << t2.Get();
+		t1.Set(2, 'b', 6.28, std::string("2"));
+
+		t1.Get(v0, v1, v2, v3);
+		std::cout << v0 << std::endl;
+		std::cout << v1 << std::endl;
+		std::cout << v2 << std::endl;
+		std::cout << v3 << std::endl;
+
+		t1.Set(3);
+
+		t1.Get(v0, v1, v2, v3);
+		std::cout << v0 << std::endl;
+		std::cout << v1 << std::endl;
+		std::cout << v2 << std::endl;
+		std::cout << v3 << std::endl;
 
 		return 0;
 }

@@ -24,6 +24,7 @@
 #define TUPLEIMPL_H
 
 #include "tupleindexer.hpp"
+#include "tuplehelpers.hpp"
 
 namespace tuple
 {

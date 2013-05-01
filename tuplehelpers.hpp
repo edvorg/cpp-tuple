@@ -20,9 +20,22 @@
 
 */
 
-#ifndef TUPLE_H
-#define TUPLE_H
+#ifndef TUPLEHELPERS_H
+#define TUPLEHELPERS_H
 
 #include "tupleimpl.hpp"
 
-#endif // TUPLE_H
+namespace tuple
+{
+
+// some usefull functions
+
+template <class ... REST>
+Tuple<REST...> MakeTuple(REST ... _rest)
+{
+		return Tuple<REST...>(_rest...);
+}
+
+} // namespace tuple
+
+#endif // TUPLEHELPERS_H

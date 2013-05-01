@@ -23,6 +23,8 @@
 #ifndef TUPLEIMPL_H
 #define TUPLEIMPL_H
 
+#include "tupleindexer.hpp"
+
 namespace tuple
 {
 
@@ -32,7 +34,10 @@ template <class T, class ... REST>
 class Tuple : public Tuple<REST...>
 {
 public:
+		using Type = T;
 		using TupleSuper = Tuple<REST...>;
+		template<unsigned int INDEX>
+		using TupleIndexer = tuple::TupleIndexer<INDEX, T, REST...>;
 
 		Tuple();
 		Tuple(const T & _p1, const REST & ... _rest);
@@ -45,6 +50,12 @@ public:
 		inline const TupleSuper * Next() const;
 
 		inline static unsigned int Index();
+
+		template <unsigned int INDEX>
+		inline const typename TupleIndexer<INDEX>::Type::Type & GetIndexed() const
+		{
+				return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
+		}
 
 protected:
 		static const unsigned int mIndex = TupleSuper::mIndex + 1;
@@ -59,7 +70,10 @@ template <class T>
 class Tuple<T>
 {
 public:
+		using Type = T;
 		using TupleSuper = Tuple<T>;
+		template<unsigned int INDEX>
+		using TupleIndexer = tuple::TupleIndexer<INDEX, T>;
 
 		Tuple();
 		Tuple(const T & _p1);
@@ -71,6 +85,12 @@ public:
 		inline const TupleSuper * Next() const;
 
 		inline static unsigned int Index();
+
+		template <unsigned int INDEX>
+		inline const typename TupleIndexer<INDEX>::Type::Type & GetIndexed() const
+		{
+				return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
+		}
 
 protected:
 		static const unsigned int mIndex = 0;

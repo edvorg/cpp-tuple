@@ -36,6 +36,7 @@ int main(int _argc, char ** _argv)
 		std::cout << t1.Next()->Get() << std::endl;
 		std::cout << t1.Next()->Next()->Get() << std::endl;
 		std::cout << t1.Next()->Next()->Next()->Get() << std::endl;
+		std::cout << std::endl;
 
 		int v0;
 		char v1;
@@ -47,6 +48,7 @@ int main(int _argc, char ** _argv)
 		std::cout << v1 << std::endl;
 		std::cout << v2 << std::endl;
 		std::cout << v3 << std::endl;
+		std::cout << std::endl;
 
 		t1.Set(2, 'b', 6.28, std::string("2"));
 
@@ -55,6 +57,7 @@ int main(int _argc, char ** _argv)
 		std::cout << v1 << std::endl;
 		std::cout << v2 << std::endl;
 		std::cout << v3 << std::endl;
+		std::cout << std::endl;
 
 		t1.Set(3);
 
@@ -63,11 +66,20 @@ int main(int _argc, char ** _argv)
 		std::cout << v1 << std::endl;
 		std::cout << v2 << std::endl;
 		std::cout << v3 << std::endl;
+		std::cout << std::endl;
 
 		std::cout << t1.Index() << std::endl;
 		std::cout << t1.Next()->Index() << std::endl;
 		std::cout << t1.Next()->Next()->Index() << std::endl;
 		std::cout << t1.Next()->Next()->Next()->Index() << std::endl;
+		std::cout << std::endl;
+
+		std::cout << t1.GetIndexed<0>() << std::endl;
+		std::cout << t1.GetIndexed<1>() << std::endl;
+		std::cout << t1.GetIndexed<2>() << std::endl;
+		std::cout << t1.GetIndexed<3>() << std::endl;
+		// std::cout << t1.GetIndexed<4>() << std::endl; // compile time error
+		std::cout << std::endl;
 
 		return 0;
 }

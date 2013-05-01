@@ -44,6 +44,11 @@ public:
 		inline TupleSuper * Next();
 		inline const TupleSuper * Next() const;
 
+		inline static unsigned int Index();
+
+protected:
+		static const unsigned int mIndex = TupleSuper::mIndex + 1;
+
 private:
 		T mMember;
 };
@@ -65,7 +70,11 @@ public:
 		inline TupleSuper * Next();
 		inline const TupleSuper * Next() const;
 
+		inline static unsigned int Index();
+
 protected:
+		static const unsigned int mIndex = 0;
+
 private:
 		T mMember;
 };
@@ -122,6 +131,12 @@ inline const Tuple<REST...> * Tuple<T, REST...>::Next() const
 		return this;
 }
 
+template <class T, class ... REST>
+inline unsigned int Tuple<T, REST...>::Index()
+{
+		return mIndex;
+}
+
 // template<class T> Tuple<T> specialization
 
 template <class T>
@@ -163,6 +178,12 @@ template <class T>
 inline const Tuple<T> * Tuple<T>::Next() const
 {
 		return nullptr;
+}
+
+template <class T>
+inline unsigned int Tuple<T>::Index()
+{
+		return mIndex;
 }
 
 } // namespace tuple

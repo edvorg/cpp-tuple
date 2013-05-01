@@ -64,5 +64,10 @@ int main(int _argc, char ** _argv)
 		std::cout << v2 << std::endl;
 		std::cout << v3 << std::endl;
 
+		std::cout << t1.Index() << std::endl;
+		std::cout << t1.Next()->Index() << std::endl;
+		std::cout << t1.Next()->Next()->Index() << std::endl;
+		std::cout << t1.Next()->Next()->Next()->Index() << std::endl;
+
 		return 0;
 }

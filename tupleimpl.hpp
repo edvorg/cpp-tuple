@@ -52,6 +52,8 @@ public:
 		inline static unsigned int Index();
 
 		template <unsigned int INDEX>
+		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
+		template <unsigned int INDEX>
 		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
 
 protected:
@@ -83,6 +85,8 @@ public:
 
 		inline static unsigned int Index();
 
+		template <unsigned int INDEX>
+		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
 		template <unsigned int INDEX>
 		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
 
@@ -153,6 +157,13 @@ inline unsigned int Tuple<T, REST...>::Index()
 
 template <class T, class ... REST>
 template <unsigned int INDEX>
+inline void Tuple<T, REST...>::Set(const typename TupleIndexer<INDEX>::Type::Type & _p1)
+{
+		return static_cast<typename TupleIndexer<INDEX>::Type*>(this)->Set(_p1);
+}
+
+template <class T, class ... REST>
+template <unsigned int INDEX>
 inline const typename TupleIndexer<INDEX, T, REST...>::Type::Type & Tuple<T, REST...>::Get() const
 {
 		return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
@@ -205,6 +216,13 @@ template <class T>
 inline unsigned int Tuple<T>::Index()
 {
 		return mIndex;
+}
+
+template <class T>
+template <unsigned int INDEX>
+inline void Tuple<T>::Set(const typename TupleIndexer<INDEX>::Type::Type & _p1)
+{
+		return static_cast<typename TupleIndexer<INDEX>::Type*>(this)->Set(_p1);
 }
 
 template <class T>

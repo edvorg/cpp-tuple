@@ -74,11 +74,11 @@ int main(int _argc, char ** _argv)
 		std::cout << t1.Next()->Next()->Next()->Index() << std::endl;
 		std::cout << std::endl;
 
-		std::cout << t1.GetIndexed<0>() << std::endl;
-		std::cout << t1.GetIndexed<1>() << std::endl;
-		std::cout << t1.GetIndexed<2>() << std::endl;
-		std::cout << t1.GetIndexed<3>() << std::endl;
-		// std::cout << t1.GetIndexed<4>() << std::endl; // compile time error
+		std::cout << t1.Get<0>() << std::endl;
+		std::cout << t1.Get<1>() << std::endl;
+		std::cout << t1.Get<2>() << std::endl;
+		std::cout << t1.Get<3>() << std::endl;
+		// std::cout << t1.Get<4>() << std::endl; // compile time error
 		std::cout << std::endl;
 
 		return 0;

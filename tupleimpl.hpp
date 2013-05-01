@@ -52,10 +52,7 @@ public:
 		inline static unsigned int Index();
 
 		template <unsigned int INDEX>
-		inline const typename TupleIndexer<INDEX>::Type::Type & GetIndexed() const
-		{
-				return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
-		}
+		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
 
 protected:
 		static const unsigned int mIndex = TupleSuper::mIndex + 1;
@@ -87,10 +84,7 @@ public:
 		inline static unsigned int Index();
 
 		template <unsigned int INDEX>
-		inline const typename TupleIndexer<INDEX>::Type::Type & GetIndexed() const
-		{
-				return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
-		}
+		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
 
 protected:
 		static const unsigned int mIndex = 0;
@@ -157,6 +151,13 @@ inline unsigned int Tuple<T, REST...>::Index()
 		return mIndex;
 }
 
+template <class T, class ... REST>
+template <unsigned int INDEX>
+inline const typename TupleIndexer<INDEX, T, REST...>::Type::Type & Tuple<T, REST...>::Get() const
+{
+		return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
+}
+
 // template<class T> Tuple<T> specialization
 
 template <class T>
@@ -204,6 +205,13 @@ template <class T>
 inline unsigned int Tuple<T>::Index()
 {
 		return mIndex;
+}
+
+template <class T>
+template <unsigned int INDEX>
+inline const typename TupleIndexer<INDEX, T>::Type::Type & Tuple<T>::Get() const
+{
+		return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
 }
 
 } // namespace tuple

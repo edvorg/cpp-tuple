@@ -116,7 +116,7 @@ int main(int _argc, char ** _argv)
 		t1.Set<1>('$');
 		t1.Set<2>(3.105);
 		t1.Set<3>("set test");
-		// t1.Set<4>("set test"); // compile time error for any argument
+		// t1.Set<4>("set test"); // compile time error for any type of argument
 
 		std::cout << t1.Get<0>() << std::endl;
 		std::cout << t1.Get<1>() << std::endl;

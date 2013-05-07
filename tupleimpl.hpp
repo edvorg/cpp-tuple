@@ -43,25 +43,51 @@ public:
 		Tuple();
 		Tuple(const T & _p1, const REST & ... _rest);
 
+		/// sets all items to corresponding arguments
 		inline void Set(const T & _p1, const REST & ... _rest);
+
+		/// stores all items in corresponding arguments
 		inline void Get(T & _p1, REST & ... _rest) const;
+
+		/// sets first item
 		inline void Set(const T & _p1);
+
+		/// gets first item
 		inline const T & Get() const;
+
+		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline TupleSuper * Next();
+
+		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;
 
-		inline static unsigned int Index();
-
+		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
 		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
+
+		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
 		template <unsigned int INDEX>
 		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
 
+		/// returns elements count
+		inline constexpr static unsigned int Count() { return mIndex + 1; }
+
+		/// invokes some callable object
+		template <class CALLABLE, unsigned int ... INDICES>
+		inline void Invoke(CALLABLE & _function, const TupleIndices<INDICES...> &);
+
+		/// invokes some callable object
+		template <class CALLABLE>
+		inline void Invoke(CALLABLE & _function);
 protected:
-		static const unsigned int mIndex = TupleSuper::mIndex + 1;
 
 private:
-		T mMember;
+		static constexpr unsigned int mIndex = TupleSuper::Count();
+		T mMember = T();
 };
 
 // ending specialization
@@ -78,24 +104,43 @@ public:
 		Tuple();
 		Tuple(const T & _p1);
 
+		/// sets all items to corresponding arguments
 		inline void Set(const T & _p1);
+
+		/// stores all items in corresponding arguments
 		inline void Get(T & _p1) const;
+
+		/// gets first item
 		inline const T & Get() const;
+
+		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline TupleSuper * Next();
+
+		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;
 
-		inline static unsigned int Index();
-
+		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
 		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
+
+		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
 		template <unsigned int INDEX>
 		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
 
-protected:
-		static const unsigned int mIndex = 0;
+		/// returns elements count
+		inline constexpr static unsigned int Count() { return mIndex + 1; }
 
+		/// invokes some callable object
+		template <class CALLABLE>
+		inline void Invoke(CALLABLE & _function);
+protected:
 private:
-		T mMember;
+		static constexpr unsigned int mIndex = 0;
+		T mMember = T();
 };
 
 // Tuple implementation
@@ -151,12 +196,6 @@ inline const Tuple<REST...> * Tuple<T, REST...>::Next() const
 }
 
 template <class T, class ... REST>
-inline unsigned int Tuple<T, REST...>::Index()
-{
-		return mIndex;
-}
-
-template <class T, class ... REST>
 template <unsigned int INDEX>
 inline void Tuple<T, REST...>::Set(const typename TupleIndexer<INDEX>::Type::Type & _p1)
 {
@@ -168,6 +207,21 @@ template <unsigned int INDEX>
 inline const typename TupleIndexer<INDEX, T, REST...>::Type::Type & Tuple<T, REST...>::Get() const
 {
 		return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
+}
+
+template <class T, class ... REST>
+template <class CALLABLE, unsigned int ... INDICES>
+inline void Tuple<T, REST...>::Invoke(CALLABLE & _function, const TupleIndices<INDICES...> &)
+{
+		_function(Get<INDICES>()...);
+}
+
+template <class T, class ... REST>
+template <class CALLABLE>
+inline void Tuple<T, REST...>::Invoke(CALLABLE & _function)
+{
+		static constexpr typename TupleIndexer<mIndex>::template Indices<> fiction;
+		Invoke(_function, fiction);
 }
 
 // template<class T> Tuple<T> specialization
@@ -214,12 +268,6 @@ inline const Tuple<T> * Tuple<T>::Next() const
 }
 
 template <class T>
-inline unsigned int Tuple<T>::Index()
-{
-		return mIndex;
-}
-
-template <class T>
 template <unsigned int INDEX>
 inline void Tuple<T>::Set(const typename TupleIndexer<INDEX>::Type::Type & _p1)
 {
@@ -231,6 +279,13 @@ template <unsigned int INDEX>
 inline const typename TupleIndexer<INDEX, T>::Type::Type & Tuple<T>::Get() const
 {
 		return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
+}
+
+template <class T>
+template <class CALLABLE>
+inline void Tuple<T>::Invoke(CALLABLE & _function)
+{
+		_function(mMember);
 }
 
 } // namespace tuple

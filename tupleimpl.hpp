@@ -55,16 +55,16 @@ public:
 		inline const T & Get() const;
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
-		/// use this to get next element in runtime
-		/// if there is now items after first item, returns nullptr
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline TupleSuper * Next();
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
-		/// use this to get next element in runtime
-		/// if there is now items after first item, returns nullptr
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;
 
-		/// sets element by INDEX. typesafe. if index is out of bounds, return error at compile time
+		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
 		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
 
@@ -113,16 +113,16 @@ public:
 		inline const T & Get() const;
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
-		/// use this to get next element in runtime
-		/// if there is now items after first item, returns nullptr
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline TupleSuper * Next();
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
-		/// use this to get next element in runtime
-		/// if there is now items after first item, returns nullptr
+		/// use this to get next item in runtime
+		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;
 
-		/// sets element by INDEX. typesafe. if index is out of bounds, return error at compile time
+		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
 		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
 

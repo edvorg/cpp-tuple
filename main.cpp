@@ -26,6 +26,14 @@
 
 #include "tuple.hpp"
 
+void TestFunction(int p1, char p2, double p3, std::string p4)
+{
+		std::cout << "* " << p1 << std::endl;
+		std::cout << "* " << p2 << std::endl;
+		std::cout << "* " << p3 << std::endl;
+		std::cout << "* " << p4 << std::endl;
+}
+
 int main(int _argc, char ** _argv)
 {
 		using namespace tuple;
@@ -68,10 +76,10 @@ int main(int _argc, char ** _argv)
 		std::cout << v3 << std::endl;
 		std::cout << std::endl;
 
-		std::cout << t1.Index() << std::endl;
-		std::cout << t1.Next()->Index() << std::endl;
-		std::cout << t1.Next()->Next()->Index() << std::endl;
-		std::cout << t1.Next()->Next()->Next()->Index() << std::endl;
+		std::cout << t1.Count() << std::endl;
+		std::cout << t1.Next()->Count() << std::endl;
+		std::cout << t1.Next()->Next()->Count() << std::endl;
+		std::cout << t1.Next()->Next()->Next()->Count() << std::endl;
 		std::cout << std::endl;
 
 		std::cout << t1.Get<0>() << std::endl;
@@ -92,6 +100,17 @@ int main(int _argc, char ** _argv)
 		std::cout << t1.Get<2>() << std::endl;
 		std::cout << t1.Get<3>() << std::endl;
 		std::cout << std::endl;
+
+		std::function<void (int, char, double, std::string)> f = [] (int p1, char p2, double p3, std::string p4)
+				{
+						std::cout << "& " << p1 << std::endl;
+						std::cout << "& " << p2 << std::endl;
+						std::cout << "& " << p3 << std::endl;
+						std::cout << "& " << p4 << std::endl;
+				};
+
+		t1.Invoke(f);
+		t1.Invoke(TestFunction);
 
 		return 0;
 }

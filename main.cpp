@@ -23,6 +23,7 @@
 #include <cstdio>
 #include <string>
 #include <iostream>
+#include <functional>
 
 #include "tuple.hpp"
 

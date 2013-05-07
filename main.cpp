@@ -34,6 +34,29 @@ void TestFunction(int p1, char p2, double p3, std::string p4)
 		std::cout << "* " << p4 << std::endl;
 }
 
+template <class ... ARGS>
+class Bind
+{
+public:
+		using Function = std::function<void (ARGS ...)>;
+		using Tuple = tuple::Tuple<ARGS ...>;
+
+		Bind(Function _function, const ARGS & ... _args):
+				mFunction(_function),
+				mTuple(_args ...)
+		{
+		}
+
+		void operator() ()
+		{
+				mTuple.Invoke(mFunction);
+		}
+
+private:
+		Function mFunction;
+		Tuple mTuple;
+};
+
 int main(int _argc, char ** _argv)
 {
 		using namespace tuple;
@@ -111,6 +134,10 @@ int main(int _argc, char ** _argv)
 
 		t1.Invoke(f);
 		t1.Invoke(TestFunction);
+
+		Bind<int, char, double, std::string> b1(f, 12, 'E', 1.178, "bind test");
+
+		b1();
 
 		return 0;
 }

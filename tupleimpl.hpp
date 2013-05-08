@@ -42,6 +42,8 @@ public:
 		using TupleSuper = Tuple<REST ...>;
 		template <unsigned int INDEX>
 		using TupleTypeIndexed = typename tuple::TupleIndexer<INDEX, T, REST ...>::TupleType;
+		template <unsigned int ... INDICES>
+		using SubTupleTypeIndexed = Tuple<MemberTypeIndexed<INDICES> ...>;
 		template <unsigned int A, unsigned int B>
 		using SubTupleTypeRanged = typename Range<A, B>::Indices::template SubTupleType<T, REST ...>;
 
@@ -80,7 +82,7 @@ public:
 
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
-		inline Tuple<MemberTypeIndexed<INDICES> ...> MakeTuple(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
+		inline SubTupleTypeIndexed<INDICES ...> MakeTuple(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
 
 		/// creates new tuple with members from this tuple, ranged by A,B indices
 		template <unsigned int A, unsigned int B>
@@ -115,6 +117,8 @@ public:
 		using TupleSuper = Tuple<T>;
 		template <unsigned int INDEX>
 		using TupleTypeIndexed = typename tuple::TupleIndexer<INDEX, T>::TupleType;
+		template <unsigned int ... INDICES>
+		using SubTupleTypeIndexed = Tuple<MemberTypeIndexed<INDICES> ...>;
 		template <unsigned int A, unsigned int B>
 		using SubTupleTypeRanged = typename Range<A, B>::Indices::template SubTupleType<T>;
 
@@ -150,7 +154,7 @@ public:
 
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
-		inline Tuple<MemberTypeIndexed<INDICES> ...> MakeTuple(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
+		inline SubTupleTypeIndexed<INDICES ...> MakeTuple(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
 
 		/// creates new tuple with members from this tuple, ranged by A,B indices
 		template <unsigned int A, unsigned int B>
@@ -236,7 +240,7 @@ inline const typename Tuple<T, REST ...>::template MemberTypeIndexed<INDEX> & Tu
 
 template <class T, class ... REST>
 template <unsigned int ... INDICES>
-inline Tuple<typename Tuple<T, REST ...>::template MemberTypeIndexed<INDICES> ...> Tuple<T, REST ...>::MakeTuple(const Indices<INDICES ...> &) const
+inline Tuple<T, REST ...>::SubTupleTypeIndexed<INDICES ...> Tuple<T, REST ...>::MakeTuple(const Indices<INDICES ...> &) const
 {
 		return Tuple<MemberTypeIndexed<INDICES> ...>(Get<INDICES>() ...);
 }
@@ -323,7 +327,7 @@ inline const typename Tuple<T>::template MemberTypeIndexed<INDEX> & Tuple<T>::Ge
 
 template <class T>
 template <unsigned int ... INDICES>
-inline Tuple<typename Tuple<T>::template MemberTypeIndexed<INDICES> ...> Tuple<T>::MakeTuple(const Indices<INDICES ...> &) const
+inline Tuple<T>::SubTupleTypeIndexed<INDICES ...> Tuple<T>::MakeTuple(const Indices<INDICES ...> &) const
 {
 		return Tuple<MemberTypeIndexed<INDICES> ...>(Get<INDICES>() ...);
 }

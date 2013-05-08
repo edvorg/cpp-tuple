@@ -31,9 +31,9 @@ namespace tuple
 // some usefull functions
 
 template <class ... REST>
-Tuple<REST...> MakeTuple(REST ... _rest)
+Tuple<REST ...> MakeTuple(REST ... _rest)
 {
-		return Tuple<REST...>(_rest...);
+		return Tuple<REST ...>(_rest ...);
 }
 
 } // namespace tuple

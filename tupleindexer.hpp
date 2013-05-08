@@ -33,16 +33,16 @@ template <unsigned int INDEX, class T, class ... REST>
 class TupleIndexer
 {
 public:
-		using TupleIndexerDeeper = TupleIndexer<INDEX - 1, REST...>;
+		using TupleIndexerDeeper = TupleIndexer<INDEX - 1, REST ...>;
 
 		using TupleType = typename TupleIndexerDeeper::TupleType;
 };
 
 template <class T, class ... REST>
-class TupleIndexer<0, T, REST...>
+class TupleIndexer<0, T, REST ...>
 {
 public:
-		using TupleType = Tuple<T, REST...>;
+		using TupleType = Tuple<T, REST ...>;
 };
 
 } // namespace tuple

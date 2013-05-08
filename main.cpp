@@ -33,6 +33,7 @@ void TestFunction(int p1, char p2, double p3, std::string p4)
 		std::cout << "* " << p2 << std::endl;
 		std::cout << "* " << p3 << std::endl;
 		std::cout << "* " << p4 << std::endl;
+		std::cout << std::endl;
 }
 
 template <class ... ARGS>
@@ -131,6 +132,7 @@ int main(int _argc, char ** _argv)
 						std::cout << "& " << p2 << std::endl;
 						std::cout << "& " << p3 << std::endl;
 						std::cout << "& " << p4 << std::endl;
+						std::cout << std::endl;
 				};
 
 		t1.Invoke(f);
@@ -143,6 +145,30 @@ int main(int _argc, char ** _argv)
 		Range<1, 4> r1;
 
 		Range<4, 1> r2;
+
+		auto t2 = t1.MakeTuple<3, 2, 1>();
+
+		std::cout << t2.Get<0>() << std::endl;
+		std::cout << t2.Get<1>() << std::endl;
+		std::cout << t2.Get<2>() << std::endl;
+		// std::cout << t2.Get<3>() << std::endl; // compile time error
+		std::cout << std::endl;
+
+		auto t3 = t1.MakeSubTuple<1, 2>();
+
+		std::cout << t3.Get<0>() << std::endl;
+		std::cout << t3.Get<1>() << std::endl;
+		// std::cout << t3.Get<2>() << std::endl; // compile time error
+		std::cout << std::endl;
+
+		auto t4 = t1.MakeSubTuple<3, 0>();
+
+		std::cout << t4.Get<0>() << std::endl;
+		std::cout << t4.Get<1>() << std::endl;
+		std::cout << t4.Get<2>() << std::endl;
+		std::cout << t4.Get<3>() << std::endl;
+		// std::cout << t4.Get<4>() << std::endl; // compile time error
+		std::cout << std::endl;
 
 		return 0;
 }

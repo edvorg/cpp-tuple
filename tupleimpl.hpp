@@ -24,6 +24,7 @@
 #define TUPLEIMPL_H
 
 #include "tupleindexer.hpp"
+#include "range.hpp"
 #include "tuplehelpers.hpp"
 
 namespace tuple
@@ -67,18 +68,18 @@ public:
 
 		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
-		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
+		inline void Set(const typename TupleIndexer<INDEX>::TupleType::Type & _p1);
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
 		template <unsigned int INDEX>
-		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
+		inline const typename TupleIndexer<INDEX>::TupleType::Type & Get() const;
 
 		/// returns elements count
 		inline constexpr static unsigned int Count() { return mIndex + 1; }
 
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int ... INDICES>
-		inline void Invoke(CALLABLE & _function, const TupleIndices<INDICES...> &);
+		inline void Invoke(CALLABLE & _function, const Indices<INDICES...> &);
 
 		/// invokes some callable object
 		template <class CALLABLE>
@@ -125,11 +126,11 @@ public:
 
 		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
-		inline void Set(const typename TupleIndexer<INDEX>::Type::Type & _p1);
+		inline void Set(const typename TupleIndexer<INDEX>::TupleType::Type & _p1);
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
 		template <unsigned int INDEX>
-		inline const typename TupleIndexer<INDEX>::Type::Type & Get() const;
+		inline const typename TupleIndexer<INDEX>::TupleType::Type & Get() const;
 
 		/// returns elements count
 		inline constexpr static unsigned int Count() { return mIndex + 1; }
@@ -197,21 +198,21 @@ inline const Tuple<REST...> * Tuple<T, REST...>::Next() const
 
 template <class T, class ... REST>
 template <unsigned int INDEX>
-inline void Tuple<T, REST...>::Set(const typename TupleIndexer<INDEX>::Type::Type & _p1)
+inline void Tuple<T, REST...>::Set(const typename TupleIndexer<INDEX>::TupleType::Type & _p1)
 {
-		return static_cast<typename TupleIndexer<INDEX>::Type*>(this)->Set(_p1);
+		return static_cast<typename TupleIndexer<INDEX>::TupleType*>(this)->Set(_p1);
 }
 
 template <class T, class ... REST>
 template <unsigned int INDEX>
-inline const typename TupleIndexer<INDEX, T, REST...>::Type::Type & Tuple<T, REST...>::Get() const
+inline const typename TupleIndexer<INDEX, T, REST...>::TupleType::Type & Tuple<T, REST...>::Get() const
 {
-		return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
+		return static_cast<const typename TupleIndexer<INDEX>::TupleType*>(this)->Get();
 }
 
 template <class T, class ... REST>
 template <class CALLABLE, unsigned int ... INDICES>
-inline void Tuple<T, REST...>::Invoke(CALLABLE & _function, const TupleIndices<INDICES...> &)
+inline void Tuple<T, REST...>::Invoke(CALLABLE & _function, const Indices<INDICES...> &)
 {
 		_function(Get<INDICES>()...);
 }
@@ -220,7 +221,7 @@ template <class T, class ... REST>
 template <class CALLABLE>
 inline void Tuple<T, REST...>::Invoke(CALLABLE & _function)
 {
-		static constexpr typename TupleIndexer<mIndex>::template Indices<> fiction;
+		static constexpr typename Range<0, mIndex>::Indices fiction;
 		Invoke(_function, fiction);
 }
 
@@ -269,16 +270,16 @@ inline const Tuple<T> * Tuple<T>::Next() const
 
 template <class T>
 template <unsigned int INDEX>
-inline void Tuple<T>::Set(const typename TupleIndexer<INDEX>::Type::Type & _p1)
+inline void Tuple<T>::Set(const typename TupleIndexer<INDEX>::TupleType::Type & _p1)
 {
-		return static_cast<typename TupleIndexer<INDEX>::Type*>(this)->Set(_p1);
+		return static_cast<typename TupleIndexer<INDEX>::TupleType*>(this)->Set(_p1);
 }
 
 template <class T>
 template <unsigned int INDEX>
-inline const typename TupleIndexer<INDEX, T>::Type::Type & Tuple<T>::Get() const
+inline const typename TupleIndexer<INDEX, T>::TupleType::Type & Tuple<T>::Get() const
 {
-		return static_cast<const typename TupleIndexer<INDEX>::Type*>(this)->Get();
+		return static_cast<const typename TupleIndexer<INDEX>::TupleType*>(this)->Get();
 }
 
 template <class T>

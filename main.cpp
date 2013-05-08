@@ -140,5 +140,9 @@ int main(int _argc, char ** _argv)
 
 		b1();
 
+		Range<1, 4> r1;
+
+		Range<4, 1> r2;
+
 		return 0;
 }

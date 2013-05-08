@@ -29,33 +29,20 @@ namespace tuple
 template <class T, class ... REST>
 class Tuple;
 
-template <unsigned int ... INDICES>
-class TupleIndices
-{
-public:
-		constexpr TupleIndices()
-		{
-		}
-};
-
 template <unsigned int INDEX, class T, class ... REST>
 class TupleIndexer
 {
 public:
 		using TupleIndexerDeeper = TupleIndexer<INDEX - 1, REST...>;
 
-		using Type = typename TupleIndexerDeeper::Type;
-		template <unsigned int ... INDICES>
-		using Indices = typename TupleIndexerDeeper::template Indices<INDEX, INDICES...>;
+		using TupleType = typename TupleIndexerDeeper::TupleType;
 };
 
 template <class T, class ... REST>
 class TupleIndexer<0, T, REST...>
 {
 public:
-		using Type = Tuple<T, REST...>;
-		template <unsigned int ... INDICES>
-		using Indices = TupleIndices<0, INDICES...>;
+		using TupleType = Tuple<T, REST...>;
 };
 
 } // namespace tuple

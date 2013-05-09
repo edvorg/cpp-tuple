@@ -33,6 +33,8 @@ template <unsigned int INDEX, class T, class ... REST>
 class TupleIndexer
 {
 public:
+		static_assert(INDEX < (sizeof...(REST) + 1), "INDEX out of bounds");
+
 		using TupleIndexerDeeper = TupleIndexer<INDEX - 1, REST ...>;
 
 		using TupleType = typename TupleIndexerDeeper::TupleType;

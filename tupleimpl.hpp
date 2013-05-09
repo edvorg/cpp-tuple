@@ -47,6 +47,8 @@ public:
 		template <unsigned int A, unsigned int B>
 		using SubTupleTypeRanged = typename Range<A, B>::Indices::template SubTupleType<T, REST ...>;
 
+		static constexpr unsigned int mIndex = TupleSuper::Count();
+
 		Tuple();
 		Tuple(const T & _p1, const REST & ... _rest);
 
@@ -89,19 +91,18 @@ public:
 		inline SubTupleTypeRanged<A, B> MakeSubTuple() const;
 
 		/// returns elements count
-		inline constexpr static unsigned int Count() { return mIndex + 1; }
+		inline static constexpr unsigned int Count() { return mIndex + 1; }
 
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int ... INDICES>
-		inline void Invoke(CALLABLE & _function, const Indices<INDICES ...> &);
+		inline auto Invoke(CALLABLE & _function, const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) -> decltype(_function(Get<INDICES>() ...));
 
 		/// invokes some callable object
 		template <class CALLABLE>
-		inline void Invoke(CALLABLE & _function);
+		inline auto Invoke(CALLABLE & _function) -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()));
 protected:
 
 private:
-		static constexpr unsigned int mIndex = TupleSuper::Count();
 		T mMember = T();
 };
 
@@ -121,6 +122,8 @@ public:
 		using SubTupleTypeIndexed = Tuple<MemberTypeIndexed<INDICES> ...>;
 		template <unsigned int A, unsigned int B>
 		using SubTupleTypeRanged = typename Range<A, B>::Indices::template SubTupleType<T>;
+
+		static constexpr unsigned int mIndex = 0;
 
 		Tuple();
 		Tuple(const T & _p1);
@@ -161,14 +164,13 @@ public:
 		inline SubTupleTypeRanged<A, B> MakeSubTuple() const;
 
 		/// returns elements count
-		inline constexpr static unsigned int Count() { return mIndex + 1; }
+		inline static constexpr unsigned int Count() { return mIndex + 1; }
 
 		/// invokes some callable object
-		template <class CALLABLE>
-		inline void Invoke(CALLABLE & _function);
+		template <class CALLABLE, unsigned int INDEX = 0>
+		inline auto Invoke(CALLABLE & _function) -> decltype(_function(Get<INDEX>()));
 protected:
 private:
-		static constexpr unsigned int mIndex = 0;
 		T mMember = T();
 };
 
@@ -254,16 +256,16 @@ inline Tuple<T, REST ...>::SubTupleTypeRanged<A, B> Tuple<T, REST ...>::MakeSubT
 
 template <class T, class ... REST>
 template <class CALLABLE, unsigned int ... INDICES>
-inline void Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &)
+inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &) -> decltype(_function(Get<INDICES>() ...))
 {
-		_function(Get<INDICES>()...);
+		return _function(Get<INDICES>()...);
 }
 
 template <class T, class ... REST>
 template <class CALLABLE>
-inline void Tuple<T, REST ...>::Invoke(CALLABLE & _function)
+inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()))
 {
-		Invoke(_function, typename Range<0, mIndex>::Indices());
+		return Invoke(_function, typename Range<0, mIndex>::Indices());
 }
 
 // template<class T> Tuple<T> specialization
@@ -338,8 +340,8 @@ inline Tuple<T>::SubTupleTypeRanged<A, B> Tuple<T>::MakeSubTuple() const
 }
 
 template <class T>
-template <class CALLABLE>
-inline void Tuple<T>::Invoke(CALLABLE & _function)
+template <class CALLABLE, unsigned int INDEX>
+inline auto Tuple<T>::Invoke(CALLABLE & _function) -> decltype(_function(Get<INDEX>()))
 {
 		_function(mMember);
 }

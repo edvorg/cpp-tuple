@@ -36,28 +36,45 @@ void TestFunction(int p1, char p2, double p3, std::string p4)
 		std::cout << std::endl;
 }
 
-template <class ... ARGS>
+template <class CALLABLE, class ... ARGS>
 class Bind
 {
 public:
-		using Function = std::function<void (ARGS ...)>;
 		using Tuple = tuple::Tuple<ARGS ...>;
 
-		Bind(Function _function, const ARGS & ... _args):
-				mFunction(_function),
+private:
+		CALLABLE mCallable;
+		Tuple mTuple;
+
+public:
+
+		Bind(CALLABLE _callable, const ARGS & ... _args):
+				mCallable(_callable),
 				mTuple(_args ...)
 		{
 		}
 
-		void operator() ()
+		auto operator() () -> decltype(mTuple.Invoke(mCallable))
 		{
-				mTuple.Invoke(mFunction);
+				return mTuple.Invoke(mCallable);
 		}
 
-private:
-		Function mFunction;
-		Tuple mTuple;
 };
+
+template <class CALLABLE, class ... ARGS>
+Bind<CALLABLE, ARGS ...> MakeBind(CALLABLE _callable, ARGS ... _args)
+{
+		return Bind<CALLABLE, ARGS ...>(_callable, _args ...);
+}
+
+void f1()
+{
+}
+
+void f2()
+{
+		return f1(); // works ??
+}
 
 int main(int _argc, char ** _argv)
 {
@@ -126,25 +143,22 @@ int main(int _argc, char ** _argv)
 		std::cout << t1.Get<3>() << std::endl;
 		std::cout << std::endl;
 
-		std::function<void (int, char, double, std::string)> f = [] (int p1, char p2, double p3, std::string p4)
+		auto f = [] (int p1, char p2, double p3, std::string p4)
 				{
 						std::cout << "& " << p1 << std::endl;
 						std::cout << "& " << p2 << std::endl;
 						std::cout << "& " << p3 << std::endl;
 						std::cout << "& " << p4 << std::endl;
 						std::cout << std::endl;
+						return std::string("lambda result");
 				};
 
 		t1.Invoke(f);
 		t1.Invoke(TestFunction);
 
-		Bind<int, char, double, std::string> b1(f, 12, 'E', 1.178, "bind test");
+		auto b1 = MakeBind(f, 12, 'E', 1.178, "bind test");
 
-		b1();
-
-		Range<1, 4> r1;
-
-		Range<4, 1> r2;
+		std::cout << b1() << std::endl << std::endl;
 
 		auto t2 = t1.MakeTuple<3, 2, 1>();
 
@@ -169,6 +183,16 @@ int main(int _argc, char ** _argv)
 		std::cout << t4.Get<3>() << std::endl;
 		// std::cout << t4.Get<4>() << std::endl; // compile time error
 		std::cout << std::endl;
+
+		auto l1 = [] (std::string p1, char p2) -> std::string
+				{
+						return p1 + p2;
+				};
+
+		auto t5 = MakeTuple(std::string("Hello, "), 'X');
+
+		// Invoke return type deduction working
+		std::cout << t5.Invoke(l1) << std::endl << std::endl;
 
 		return 0;
 }

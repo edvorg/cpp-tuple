@@ -249,8 +249,7 @@ template <class T, class ... REST>
 template <unsigned int A, unsigned int B>
 inline Tuple<T, REST ...>::SubTupleTypeRanged<A, B> Tuple<T, REST ...>::MakeSubTuple() const
 {
-		constexpr static typename Range<A, B>::Indices indices;
-		return MakeTuple(indices);
+		return MakeTuple(typename Range<A, B>::Indices());
 }
 
 template <class T, class ... REST>
@@ -264,8 +263,7 @@ template <class T, class ... REST>
 template <class CALLABLE>
 inline void Tuple<T, REST ...>::Invoke(CALLABLE & _function)
 {
-		static constexpr typename Range<0, mIndex>::Indices fiction;
-		Invoke(_function, fiction);
+		Invoke(_function, typename Range<0, mIndex>::Indices());
 }
 
 // template<class T> Tuple<T> specialization
@@ -336,8 +334,7 @@ template <class T>
 template <unsigned int A, unsigned int B>
 inline Tuple<T>::SubTupleTypeRanged<A, B> Tuple<T>::MakeSubTuple() const
 {
-		constexpr static typename Range<A, B>::Indices indices;
-		return MakeTuple(indices);
+		return MakeTuple(typename Range<A, B>::Indices());
 }
 
 template <class T>

@@ -36,8 +36,6 @@ public:
 		template <class T, class ... REST>
 		using SubTupleType = Tuple<typename Tuple<T, REST ...>::template MemberTypeIndexed<INDICES> ...>;
 
-		constexpr Indices() {}
-
 protected:
 private:
 };

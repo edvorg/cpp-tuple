@@ -63,6 +63,9 @@ public:
 		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;
 
+		/// copies data from entire _src tuple to this tuple
+		inline void Set(const Tuple & _src);
+
 		/// sets all items to corresponding arguments
 		inline void Set(const T & _p1, const REST & ... _rest);
 
@@ -140,6 +143,9 @@ public:
 		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;
 
+		/// copies data from entire _src tuple to this tuple
+		inline void Set(const Tuple & _src);
+
 		/// sets all items to corresponding arguments
 		inline void Set(const T & _p1);
 
@@ -200,6 +206,13 @@ template <class T, class ... REST>
 inline const Tuple<REST ...> * Tuple<T, REST ...>::Next() const
 {
 		return &mRest;
+}
+
+template <class T, class ... REST>
+inline void Tuple<T, REST ...>::Set(const Tuple & _src)
+{
+		mMember = _src.mMember;
+		mRest.Set(_src.mRest);
 }
 
 template <class T, class ... REST>
@@ -293,6 +306,12 @@ template <class T>
 inline const Tuple<T> * Tuple<T>::Next() const
 {
 		return nullptr;
+}
+
+template <class T>
+inline void Tuple<T>::Set(const Tuple & _src)
+{
+		mMember = _src.mMember;
 }
 
 template <class T>

@@ -51,6 +51,7 @@ public:
 		static constexpr unsigned int mIndex = TupleSuper::Count();
 
 		Tuple();
+		Tuple(const Tuple & _src);
 		Tuple(const T & _p1, const REST & ... _rest);
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
@@ -131,6 +132,7 @@ public:
 		static constexpr unsigned int mIndex = 0;
 
 		Tuple();
+		Tuple(const Tuple & _src);
 		Tuple(const T & _p1);
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
@@ -186,6 +188,13 @@ private:
 
 template <class T, class ... REST>
 Tuple<T, REST ...>::Tuple()
+{
+}
+
+template <class T, class ... REST>
+Tuple<T, REST ...>::Tuple(const Tuple & _src):
+		mMember(_src.mMember),
+		mRest(_src.mRest)
 {
 }
 
@@ -287,6 +296,12 @@ inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) const -> decltype(I
 
 template <class T>
 Tuple<T>::Tuple()
+{
+}
+
+template <class T>
+Tuple<T>::Tuple(const Tuple & _src):
+		mMember(_src.mMember)
 {
 }
 

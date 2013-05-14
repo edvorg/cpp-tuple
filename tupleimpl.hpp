@@ -52,6 +52,7 @@ public:
 
 		Tuple();
 		Tuple(const Tuple & _src);
+		Tuple(Tuple && _src);
 		Tuple(const T & _p1, const REST & ... _rest);
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
@@ -133,6 +134,7 @@ public:
 
 		Tuple();
 		Tuple(const Tuple & _src);
+		Tuple(Tuple && _src);
 		Tuple(const T & _p1);
 
 		/// gets subtuple not containing first item (just converts this pointer to it)
@@ -195,6 +197,13 @@ template <class T, class ... REST>
 Tuple<T, REST ...>::Tuple(const Tuple & _src):
 		mMember(_src.mMember),
 		mRest(_src.mRest)
+{
+}
+
+template <class T, class ... REST>
+Tuple<T, REST ...>::Tuple(Tuple && _src):
+		mMember(std::move(_src.mMember)),
+		mRest(std::move(_src.mRest))
 {
 }
 
@@ -302,6 +311,12 @@ Tuple<T>::Tuple()
 template <class T>
 Tuple<T>::Tuple(const Tuple & _src):
 		mMember(_src.mMember)
+{
+}
+
+template <class T>
+Tuple<T>::Tuple(Tuple && _src):
+		mMember(std::move(_src.mMember))
 {
 }
 

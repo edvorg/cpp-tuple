@@ -91,6 +91,14 @@ public:
 		template <unsigned int INDEX>
 		inline const MemberTypeIndexed<INDEX> & Get() const;
 
+		/// returns indexed subtuple of this tuple
+		template <unsigned int INDEX>
+		inline const SubTupleTypeIndexed<INDEX> & GetSubTuple() const;
+
+		/// returns indexed subtuple of this tuple
+		template <unsigned int INDEX>
+		inline SubTupleTypeIndexed<INDEX> & GetSubTuple();
+
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
 		inline SubTupleTypeIndexed<INDICES ...> MakeTuple(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
@@ -172,6 +180,14 @@ public:
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
 		template <unsigned int INDEX>
 		inline const MemberTypeIndexed<INDEX> & Get() const;
+
+		/// returns indexed subtuple of this tuple
+		template <unsigned int INDEX>
+		inline const SubTupleTypeIndexed<INDEX> & GetSubTuple() const;
+
+		/// returns indexed subtuple of this tuple
+		template <unsigned int INDEX>
+		inline SubTupleTypeIndexed<INDEX> & GetSubTuple();
 
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
@@ -294,6 +310,20 @@ inline const typename Tuple<T, REST ...>::template MemberTypeIndexed<INDEX> & Tu
 }
 
 template <class T, class ... REST>
+template <unsigned int INDEX>
+inline const Tuple<T, REST ...>::SubTupleTypeIndexed<INDEX> & Tuple<T, REST ...>::GetSubTuple() const
+{
+		return Accessor<INDEX, T, REST ...>::GetSubTuple(*this);
+}
+
+template <class T, class ... REST>
+template <unsigned int INDEX>
+inline Tuple<T, REST ...>::SubTupleTypeIndexed<INDEX> & Tuple<T, REST ...>::GetSubTuple()
+{
+		return Accessor<INDEX, T, REST ...>::GetSubTuple(*this);
+}
+
+template <class T, class ... REST>
 template <unsigned int ... INDICES>
 inline Tuple<T, REST ...>::SubTupleTypeIndexed<INDICES ...> Tuple<T, REST ...>::MakeTuple(const Indices<INDICES ...> &) const
 {
@@ -406,6 +436,20 @@ template <unsigned int INDEX>
 inline const typename Tuple<T>::template MemberTypeIndexed<INDEX> & Tuple<T>::Get() const
 {
 		return Accessor<INDEX, T>::Get(*this);
+}
+
+template <class T>
+template <unsigned int INDEX>
+inline const Tuple<T>::SubTupleTypeIndexed<INDEX> & Tuple<T>::GetSubTuple() const
+{
+		return Accessor<INDEX, T>::GetSubTuple(*this);
+}
+
+template <class T>
+template <unsigned int INDEX>
+inline Tuple<T>::SubTupleTypeIndexed<INDEX> & Tuple<T>::GetSubTuple()
+{
+		return Accessor<INDEX, T>::GetSubTuple(*this);
 }
 
 template <class T>

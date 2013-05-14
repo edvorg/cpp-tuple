@@ -26,6 +26,7 @@
 #include "tupleindexer.hpp"
 #include "range.hpp"
 #include "tuplehelpers.hpp"
+#include "accessor.hpp"
 
 namespace tuple
 {
@@ -95,11 +96,11 @@ public:
 
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int ... INDICES>
-		inline auto Invoke(CALLABLE & _function, const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) -> decltype(_function(Get<INDICES>() ...));
+		inline auto Invoke(CALLABLE & _function, const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const -> decltype(_function(Get<INDICES>() ...));
 
 		/// invokes some callable object
 		template <class CALLABLE>
-		inline auto Invoke(CALLABLE & _function) -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()));
+		inline auto Invoke(CALLABLE & _function) const -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()));
 protected:
 
 private:
@@ -169,7 +170,7 @@ public:
 
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int INDEX = 0>
-		inline auto Invoke(CALLABLE & _function) -> decltype(_function(Get<INDEX>()));
+		inline auto Invoke(CALLABLE & _function) const -> decltype(_function(Get<INDEX>()));
 protected:
 private:
 		T mMember = T();
@@ -231,14 +232,14 @@ template <class T, class ... REST>
 template <unsigned int INDEX>
 inline void Tuple<T, REST ...>::Set(const MemberTypeIndexed<INDEX> & _p1)
 {
-		return static_cast<TupleTypeIndexed<INDEX> *>(this)->Set(_p1);
+		Accessor<INDEX, T, REST ...>::Set(*this, _p1);
 }
 
 template <class T, class ... REST>
 template <unsigned int INDEX>
 inline const typename Tuple<T, REST ...>::template MemberTypeIndexed<INDEX> & Tuple<T, REST ...>::Get() const
 {
-		return static_cast<const TupleTypeIndexed<INDEX> *>(this)->Get();
+		return Accessor<INDEX, T, REST ...>::Get(*this);
 }
 
 template <class T, class ... REST>
@@ -257,14 +258,14 @@ inline Tuple<T, REST ...>::SubTupleTypeRanged<A, B> Tuple<T, REST ...>::MakeSubT
 
 template <class T, class ... REST>
 template <class CALLABLE, unsigned int ... INDICES>
-inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &) -> decltype(_function(Get<INDICES>() ...))
+inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &) const -> decltype(_function(Get<INDICES>() ...))
 {
 		return _function(Get<INDICES>()...);
 }
 
 template <class T, class ... REST>
 template <class CALLABLE>
-inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()))
+inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) const -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()))
 {
 		return Invoke(_function, typename Range<0, mIndex>::Indices());
 }
@@ -316,14 +317,14 @@ template <class T>
 template <unsigned int INDEX>
 inline void Tuple<T>::Set(const MemberTypeIndexed<INDEX> & _p1)
 {
-		return static_cast<TupleTypeIndexed<INDEX> *>(this)->Set(_p1);
+		Accessor<INDEX, T>::Set(*this, _p1);
 }
 
 template <class T>
 template <unsigned int INDEX>
 inline const typename Tuple<T>::template MemberTypeIndexed<INDEX> & Tuple<T>::Get() const
 {
-		return static_cast<const TupleTypeIndexed<INDEX> *>(this)->Get();
+		return Accessor<INDEX, T>::Get(*this);
 }
 
 template <class T>
@@ -342,7 +343,7 @@ inline Tuple<T>::SubTupleTypeRanged<A, B> Tuple<T>::MakeSubTuple() const
 
 template <class T>
 template <class CALLABLE, unsigned int INDEX>
-inline auto Tuple<T>::Invoke(CALLABLE & _function) -> decltype(_function(Get<INDEX>()))
+inline auto Tuple<T>::Invoke(CALLABLE & _function) const -> decltype(_function(Get<INDEX>()))
 {
 		_function(mMember);
 }

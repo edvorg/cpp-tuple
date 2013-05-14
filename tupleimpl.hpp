@@ -205,14 +205,14 @@ template <class T, class ... REST>
 inline void Tuple<T, REST ...>::Set(const T & _p1, const REST & ... _rest)
 {
 		mMember = _p1;
-		TupleSuper::Set(_rest ...);
+		mRest.Set(_rest ...);
 }
 
 template <class T, class ... REST>
 inline void Tuple<T, REST ...>::Get(T & _p1, REST & ... _rest) const
 {
 		_p1 = mMember;
-		TupleSuper::Get(_rest ...);
+		mRest.Get(_rest ...);
 }
 
 template <class T, class ... REST>

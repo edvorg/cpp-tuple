@@ -55,6 +55,9 @@ public:
 		Tuple(Tuple && _src);
 		Tuple(const T & _p1, const REST & ... _rest);
 
+		inline Tuple & operator =(const Tuple & _src);
+		inline Tuple & operator =(Tuple && _src);
+
 		/// gets subtuple not containing first item (just converts this pointer to it)
 		/// use this to get next item in runtime
 		/// if there is no items after first item, returns nullptr
@@ -137,6 +140,9 @@ public:
 		Tuple(Tuple && _src);
 		Tuple(const T & _p1);
 
+		inline Tuple & operator =(const Tuple & _src);
+		inline Tuple & operator =(Tuple && _src);
+
 		/// gets subtuple not containing first item (just converts this pointer to it)
 		/// use this to get next item in runtime
 		/// if there is no items after first item, returns nullptr
@@ -212,6 +218,20 @@ Tuple<T, REST ...>::Tuple(const T & _p1, const REST & ... _rest):
 		mMember(_p1),
 		mRest(_rest ...)
 {
+}
+
+template <class T, class ... REST>
+inline Tuple<T, REST ...> & Tuple<T, REST ...>::operator =(const Tuple & _src)
+{
+		mMember = _src.mMember;
+		mRest = _src.mRest;
+}
+
+template <class T, class ... REST>
+inline Tuple<T, REST ...> & Tuple<T, REST ...>::operator =(Tuple && _src)
+{
+		mMember = std::move(_src.mMember);
+		mRest = std::move(_src.mRest);
 }
 
 template <class T, class ... REST>
@@ -324,6 +344,18 @@ template <class T>
 Tuple<T>::Tuple(const T & _p1):
 		mMember(_p1)
 {
+}
+
+template <class T>
+inline Tuple<T> & Tuple<T>::operator =(const Tuple & _src)
+{
+		mMember = _src.mMember;
+}
+
+template <class T>
+inline Tuple<T> & Tuple<T>::operator =(Tuple && _src)
+{
+		mMember = std::move(_src.mMember);
 }
 
 template <class T>

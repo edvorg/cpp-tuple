@@ -160,7 +160,7 @@ int main(int _argc, char ** _argv)
 
 		std::cout << b1() << std::endl << std::endl;
 
-		auto t2 = t1.MakeTuple<3, 2, 1>();
+		auto t2 = t1.MakeByIndices<3, 2, 1>();
 
 		std::cout << t2.Get<0>() << std::endl;
 		std::cout << t2.Get<1>() << std::endl;
@@ -168,14 +168,14 @@ int main(int _argc, char ** _argv)
 		// std::cout << t2.Get<3>() << std::endl; // compile time error
 		std::cout << std::endl;
 
-		auto t3 = t1.MakeSubTuple<1, 2>();
+		auto t3 = t1.MakeByRange<1, 2>();
 
 		std::cout << t3.Get<0>() << std::endl;
 		std::cout << t3.Get<1>() << std::endl;
 		// std::cout << t3.Get<2>() << std::endl; // compile time error
 		std::cout << std::endl;
 
-		auto t4 = t1.MakeSubTuple<3, 0>();
+		auto t4 = t1.MakeByRange<3, 0>();
 
 		std::cout << t4.Get<0>() << std::endl;
 		std::cout << t4.Get<1>() << std::endl;

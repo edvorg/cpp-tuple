@@ -58,12 +58,12 @@ public:
 		inline Tuple & operator =(const Tuple & _src);
 		inline Tuple & operator =(Tuple && _src);
 
-		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// gets subtuple not containing first item
 		/// use this to get next item in runtime
 		/// if there is no items after first item, returns nullptr
 		inline TupleSuper * Next();
 
-		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// gets subtuple not containing first item
 		/// use this to get next item in runtime
 		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;
@@ -151,12 +151,12 @@ public:
 		inline Tuple & operator =(const Tuple & _src);
 		inline Tuple & operator =(Tuple && _src);
 
-		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// gets subtuple not containing first item
 		/// use this to get next item in runtime
 		/// if there is no items after first item, returns nullptr
 		inline TupleSuper * Next();
 
-		/// gets subtuple not containing first item (just converts this pointer to it)
+		/// gets subtuple not containing first item
 		/// use this to get next item in runtime
 		/// if there is no items after first item, returns nullptr
 		inline const TupleSuper * Next() const;

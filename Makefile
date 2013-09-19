@@ -5,3 +5,6 @@ all:
 
 check-syntax:
 	clang++ ${CPP_FLAGS} -fsyntax-only -fno-color-diagnostics ${CHK_SOURCES}
+
+print-cflags:
+	echo ${CPP_FLAGS}

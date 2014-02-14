@@ -55,8 +55,8 @@ public:
 		Tuple(Tuple && _src);
 		Tuple(const T & _p1, const REST & ... _rest);
 
-		inline Tuple & operator =(const Tuple & _src);
-		inline Tuple & operator =(Tuple && _src);
+		inline auto & operator =(const Tuple & _src);
+		inline auto & operator =(Tuple && _src);
 
 		/// gets subtuple not containing first item
 		/// use this to get next item in runtime
@@ -81,7 +81,7 @@ public:
 		inline void Set(const T & _p1);
 
 		/// gets first item
-		inline const T & Get() const;
+		inline const auto & Get() const;
 
 		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
@@ -89,26 +89,26 @@ public:
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
 		template <unsigned int INDEX>
-		inline const MemberTypeIndexed<INDEX> & Get() const;
+		inline const auto & Get() const;
 
 		/// returns indexed subtuple of this tuple
 		template <unsigned int INDEX>
-		inline const SubTupleTypeIndexed<INDEX> & GetSubTuple() const;
+		inline const auto & GetSubTuple() const;
 
 		/// returns indexed subtuple of this tuple
 		template <unsigned int INDEX>
-		inline SubTupleTypeIndexed<INDEX> & GetSubTuple();
+		inline auto & GetSubTuple();
 
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
-		inline SubTupleTypeIndexed<INDICES ...> MakeByIndices(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
+		inline auto MakeByIndices(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
 
 		/// creates new tuple with members from this tuple, ranged by A,B indices
 		template <unsigned int A, unsigned int B>
-		inline SubTupleTypeRanged<A, B> MakeByRange() const;
+		inline auto MakeByRange() const;
 
 		/// returns elements count
-		inline static constexpr unsigned int Count() { return mIndex + 1; }
+		inline static constexpr auto Count() { return mIndex + 1; }
 
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int ... INDICES>
@@ -116,7 +116,7 @@ public:
 
 		/// invokes some callable object
 		template <class CALLABLE>
-		inline auto Invoke(CALLABLE & _function) const -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()));
+		inline auto Invoke(CALLABLE & _function) const;
 protected:
 
 private:
@@ -148,8 +148,8 @@ public:
 		Tuple(Tuple && _src);
 		Tuple(const T & _p1);
 
-		inline Tuple & operator =(const Tuple & _src);
-		inline Tuple & operator =(Tuple && _src);
+		inline auto & operator =(const Tuple & _src);
+		inline auto & operator =(Tuple && _src);
 
 		/// gets subtuple not containing first item
 		/// use this to get next item in runtime
@@ -171,7 +171,7 @@ public:
 		inline void Get(T & _p1) const;
 
 		/// gets first item
-		inline const T & Get() const;
+		inline const auto & Get() const;
 
 		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
@@ -179,30 +179,30 @@ public:
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
 		template <unsigned int INDEX>
-		inline const MemberTypeIndexed<INDEX> & Get() const;
+		inline const auto & Get() const;
 
 		/// returns indexed subtuple of this tuple
 		template <unsigned int INDEX>
-		inline const SubTupleTypeIndexed<INDEX> & GetSubTuple() const;
+		inline const auto & GetSubTuple() const;
 
 		/// returns indexed subtuple of this tuple
 		template <unsigned int INDEX>
-		inline SubTupleTypeIndexed<INDEX> & GetSubTuple();
+		inline auto & GetSubTuple();
 
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
-		inline SubTupleTypeIndexed<INDICES ...> MakeByIndices(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
+		inline auto MakeByIndices(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
 
 		/// creates new tuple with members from this tuple, ranged by A,B indices
 		template <unsigned int A, unsigned int B>
-		inline SubTupleTypeRanged<A, B> MakeByRange() const;
+		inline auto MakeByRange() const;
 
 		/// returns elements count
-		inline static constexpr unsigned int Count() { return mIndex + 1; }
+		inline static constexpr auto Count() { return mIndex + 1; }
 
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int INDEX = 0>
-		inline auto Invoke(CALLABLE & _function) const -> decltype(_function(Get<INDEX>()));
+		inline auto Invoke(CALLABLE & _function) const;
 protected:
 private:
 		T mMember = T();
@@ -237,17 +237,19 @@ Tuple<T, REST ...>::Tuple(const T & _p1, const REST & ... _rest):
 }
 
 template <class T, class ... REST>
-inline Tuple<T, REST ...> & Tuple<T, REST ...>::operator =(const Tuple & _src)
+inline auto & Tuple<T, REST ...>::operator =(const Tuple & _src)
 {
 		mMember = _src.mMember;
 		mRest = _src.mRest;
+        return *this;
 }
 
 template <class T, class ... REST>
-inline Tuple<T, REST ...> & Tuple<T, REST ...>::operator =(Tuple && _src)
+inline auto & Tuple<T, REST ...>::operator =(Tuple && _src)
 {
 		mMember = std::move(_src.mMember);
 		mRest = std::move(_src.mRest);
+        return *this;
 }
 
 template <class T, class ... REST>
@@ -290,7 +292,7 @@ inline void Tuple<T, REST ...>::Set(const T & _p1)
 }
 
 template <class T, class ... REST>
-inline const T & Tuple<T, REST ...>::Get() const
+inline const auto & Tuple<T, REST ...>::Get() const
 {
 		return mMember;
 }
@@ -304,35 +306,35 @@ inline void Tuple<T, REST ...>::Set(const MemberTypeIndexed<INDEX> & _p1)
 
 template <class T, class ... REST>
 template <unsigned int INDEX>
-inline const typename Tuple<T, REST ...>::template MemberTypeIndexed<INDEX> & Tuple<T, REST ...>::Get() const
+inline const auto & Tuple<T, REST ...>::Get() const
 {
 		return Accessor<INDEX, T, REST ...>::Get(*this);
 }
 
 template <class T, class ... REST>
 template <unsigned int INDEX>
-inline const Tuple<T, REST ...>::SubTupleTypeIndexed<INDEX> & Tuple<T, REST ...>::GetSubTuple() const
+inline const auto & Tuple<T, REST ...>::GetSubTuple() const
 {
 		return Accessor<INDEX, T, REST ...>::GetSubTuple(*this);
 }
 
 template <class T, class ... REST>
 template <unsigned int INDEX>
-inline Tuple<T, REST ...>::SubTupleTypeIndexed<INDEX> & Tuple<T, REST ...>::GetSubTuple()
+inline auto & Tuple<T, REST ...>::GetSubTuple()
 {
 		return Accessor<INDEX, T, REST ...>::GetSubTuple(*this);
 }
 
 template <class T, class ... REST>
 template <unsigned int ... INDICES>
-inline Tuple<T, REST ...>::SubTupleTypeIndexed<INDICES ...> Tuple<T, REST ...>::MakeByIndices(const Indices<INDICES ...> &) const
+inline auto Tuple<T, REST ...>::MakeByIndices(const Indices<INDICES ...> &) const
 {
 		return Tuple<MemberTypeIndexed<INDICES> ...>(Get<INDICES>() ...);
 }
 
 template <class T, class ... REST>
 template <unsigned int A, unsigned int B>
-inline Tuple<T, REST ...>::SubTupleTypeRanged<A, B> Tuple<T, REST ...>::MakeByRange() const
+inline auto Tuple<T, REST ...>::MakeByRange() const
 {
 		return MakeByIndices(typename Range<A, B>::Indices());
 }
@@ -346,7 +348,7 @@ inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDIC
 
 template <class T, class ... REST>
 template <class CALLABLE>
-inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) const -> decltype(Invoke(_function, typename Range<0, mIndex>::Indices()))
+inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) const
 {
 		return Invoke(_function, typename Range<0, mIndex>::Indices());
 }
@@ -377,13 +379,13 @@ Tuple<T>::Tuple(const T & _p1):
 }
 
 template <class T>
-inline Tuple<T> & Tuple<T>::operator =(const Tuple & _src)
+inline auto & Tuple<T>::operator =(const Tuple & _src)
 {
 		mMember = _src.mMember;
 }
 
 template <class T>
-inline Tuple<T> & Tuple<T>::operator =(Tuple && _src)
+inline auto & Tuple<T>::operator =(Tuple && _src)
 {
 		mMember = std::move(_src.mMember);
 }
@@ -419,7 +421,7 @@ inline void Tuple<T>::Get(T & _p1) const
 }
 
 template <class T>
-inline const T & Tuple<T>::Get() const
+inline const auto & Tuple<T>::Get() const
 {
 		return mMember;
 }
@@ -433,44 +435,44 @@ inline void Tuple<T>::Set(const MemberTypeIndexed<INDEX> & _p1)
 
 template <class T>
 template <unsigned int INDEX>
-inline const typename Tuple<T>::template MemberTypeIndexed<INDEX> & Tuple<T>::Get() const
+inline const auto & Tuple<T>::Get() const
 {
 		return Accessor<INDEX, T>::Get(*this);
 }
 
 template <class T>
 template <unsigned int INDEX>
-inline const Tuple<T>::SubTupleTypeIndexed<INDEX> & Tuple<T>::GetSubTuple() const
+inline const auto & Tuple<T>::GetSubTuple() const
 {
 		return Accessor<INDEX, T>::GetSubTuple(*this);
 }
 
 template <class T>
 template <unsigned int INDEX>
-inline Tuple<T>::SubTupleTypeIndexed<INDEX> & Tuple<T>::GetSubTuple()
+inline auto & Tuple<T>::GetSubTuple()
 {
 		return Accessor<INDEX, T>::GetSubTuple(*this);
 }
 
 template <class T>
 template <unsigned int ... INDICES>
-inline Tuple<T>::SubTupleTypeIndexed<INDICES ...> Tuple<T>::MakeByIndices(const Indices<INDICES ...> &) const
+inline auto Tuple<T>::MakeByIndices(const Indices<INDICES ...> &) const
 {
 		return Tuple<MemberTypeIndexed<INDICES> ...>(Get<INDICES>() ...);
 }
 
 template <class T>
 template <unsigned int A, unsigned int B>
-inline Tuple<T>::SubTupleTypeRanged<A, B> Tuple<T>::MakeByRange() const
+inline auto Tuple<T>::MakeByRange() const
 {
 		return MakeByIndices(typename Range<A, B>::Indices());
 }
 
 template <class T>
 template <class CALLABLE, unsigned int INDEX>
-inline auto Tuple<T>::Invoke(CALLABLE & _function) const -> decltype(_function(Get<INDEX>()))
+inline auto Tuple<T>::Invoke(CALLABLE & _function) const
 {
-		_function(mMember);
+		return _function(mMember);
 }
 
 } // namespace tuple

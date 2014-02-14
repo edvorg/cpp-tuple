@@ -112,7 +112,7 @@ public:
 
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int ... INDICES>
-		inline auto Invoke(CALLABLE & _function, const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const -> decltype(_function(Get<INDICES>() ...));
+		inline auto Invoke(CALLABLE & _function, const Indices<INDICES ...> & _indices) const;
 
 		/// invokes some callable object
 		template <class CALLABLE>
@@ -341,7 +341,7 @@ inline auto Tuple<T, REST ...>::MakeByRange() const
 
 template <class T, class ... REST>
 template <class CALLABLE, unsigned int ... INDICES>
-inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &) const -> decltype(_function(Get<INDICES>() ...))
+inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &) const
 {
 		return _function(Get<INDICES>()...);
 }

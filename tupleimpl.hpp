@@ -50,6 +50,9 @@ namespace tuple
 
 		static constexpr unsigned int mIndex = TupleSuper::Count();
 
+        using FullRange = Range<0, mIndex>;
+        using AllIndices = typename FullRange::Indices;
+
 		Tuple();
 		Tuple(const Tuple & _src);
 		Tuple(Tuple && _src);
@@ -142,6 +145,9 @@ namespace tuple
 		using SubTupleTypeRanged = typename Range<A, B>::Indices::template SubTupleType<T>;
 
 		static constexpr unsigned int mIndex = 0;
+
+        using FullRange = Range<0, mIndex>;
+        using AllIndices = typename FullRange::Indices;
 
 		Tuple();
 		Tuple(const Tuple & _src);

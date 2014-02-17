@@ -33,10 +33,10 @@ namespace tuple
 
 // declaration
 
-template <class T, class ... REST>
-class Tuple
-{
-public:
+    template <class T, class ... REST>
+    class Tuple
+    {
+    public:
 		using LeftMemberType = T;
 		template <unsigned int INDEX>
 		using MemberTypeIndexed = typename tuple::TupleIndexer<INDEX, T, REST ...>::TupleType::LeftMemberType;
@@ -117,19 +117,19 @@ public:
 		/// invokes some callable object
 		template <class CALLABLE>
 		inline auto Invoke(CALLABLE & _function) const;
-protected:
+    protected:
 
-private:
+    private:
 		T mMember = T();
 		TupleSuper mRest = TupleSuper();
-};
+    };
 
 // ending specialization
 
-template <class T>
-class Tuple<T>
-{
-public:
+    template <class T>
+    class Tuple<T>
+    {
+    public:
 		using LeftMemberType = T;
 		template <unsigned int INDEX>
 		using MemberTypeIndexed = typename tuple::TupleIndexer<INDEX, T>::TupleType::LeftMemberType;
@@ -203,277 +203,279 @@ public:
 		/// invokes some callable object
 		template <class CALLABLE, unsigned int INDEX = 0>
 		inline auto Invoke(CALLABLE & _function) const;
-protected:
-private:
+    protected:
+    private:
 		T mMember = T();
-};
+    };
 
 // Tuple implementation
 
-template <class T, class ... REST>
-Tuple<T, REST ...>::Tuple()
-{
-}
+    template <class T, class ... REST>
+    Tuple<T, REST ...>::Tuple()
+    {
+    }
 
-template <class T, class ... REST>
-Tuple<T, REST ...>::Tuple(const Tuple & _src):
+    template <class T, class ... REST>
+    Tuple<T, REST ...>::Tuple(const Tuple & _src):
 		mMember(_src.mMember),
 		mRest(_src.mRest)
-{
-}
+    {
+    }
 
-template <class T, class ... REST>
-Tuple<T, REST ...>::Tuple(Tuple && _src):
+    template <class T, class ... REST>
+    Tuple<T, REST ...>::Tuple(Tuple && _src):
 		mMember(std::move(_src.mMember)),
 		mRest(std::move(_src.mRest))
-{
-}
+    {
+    }
 
-template <class T, class ... REST>
-Tuple<T, REST ...>::Tuple(const T & _p1, const REST & ... _rest):
+    template <class T, class ... REST>
+    Tuple<T, REST ...>::Tuple(const T & _p1, const REST & ... _rest):
 		mMember(_p1),
 		mRest(_rest ...)
-{
-}
+    {
+    }
 
-template <class T, class ... REST>
-inline auto & Tuple<T, REST ...>::operator =(const Tuple & _src)
-{
+    template <class T, class ... REST>
+    inline auto & Tuple<T, REST ...>::operator =(const Tuple & _src)
+    {
 		mMember = _src.mMember;
 		mRest = _src.mRest;
         return *this;
-}
+    }
 
-template <class T, class ... REST>
-inline auto & Tuple<T, REST ...>::operator =(Tuple && _src)
-{
+    template <class T, class ... REST>
+    inline auto & Tuple<T, REST ...>::operator =(Tuple && _src)
+    {
 		mMember = std::move(_src.mMember);
 		mRest = std::move(_src.mRest);
         return *this;
-}
+    }
 
-template <class T, class ... REST>
-inline Tuple<REST ...> * Tuple<T, REST ...>::Next()
-{
+    template <class T, class ... REST>
+    inline Tuple<REST ...> * Tuple<T, REST ...>::Next()
+    {
 		return &mRest;
-}
+    }
 
-template <class T, class ... REST>
-inline const Tuple<REST ...> * Tuple<T, REST ...>::Next() const
-{
+    template <class T, class ... REST>
+    inline const Tuple<REST ...> * Tuple<T, REST ...>::Next() const
+    {
 		return &mRest;
-}
+    }
 
-template <class T, class ... REST>
-inline void Tuple<T, REST ...>::Set(const Tuple & _src)
-{
+    template <class T, class ... REST>
+    inline void Tuple<T, REST ...>::Set(const Tuple & _src)
+    {
 		mMember = _src.mMember;
 		mRest.Set(_src.mRest);
-}
+    }
 
-template <class T, class ... REST>
-inline void Tuple<T, REST ...>::Set(const T & _p1, const REST & ... _rest)
-{
+    template <class T, class ... REST>
+    inline void Tuple<T, REST ...>::Set(const T & _p1, const REST & ... _rest)
+    {
 		mMember = _p1;
 		mRest.Set(_rest ...);
-}
+    }
 
-template <class T, class ... REST>
-inline void Tuple<T, REST ...>::Get(T & _p1, REST & ... _rest) const
-{
+    template <class T, class ... REST>
+    inline void Tuple<T, REST ...>::Get(T & _p1, REST & ... _rest) const
+    {
 		_p1 = mMember;
 		mRest.Get(_rest ...);
-}
+    }
 
-template <class T, class ... REST>
-inline void Tuple<T, REST ...>::Set(const T & _p1)
-{
+    template <class T, class ... REST>
+    inline void Tuple<T, REST ...>::Set(const T & _p1)
+    {
 		mMember = _p1;
-}
+    }
 
-template <class T, class ... REST>
-inline const auto & Tuple<T, REST ...>::Get() const
-{
+    template <class T, class ... REST>
+    inline const auto & Tuple<T, REST ...>::Get() const
+    {
 		return mMember;
-}
+    }
 
-template <class T, class ... REST>
-template <unsigned int INDEX>
-inline void Tuple<T, REST ...>::Set(const MemberTypeIndexed<INDEX> & _p1)
-{
+    template <class T, class ... REST>
+    template <unsigned int INDEX>
+    inline void Tuple<T, REST ...>::Set(const MemberTypeIndexed<INDEX> & _p1)
+    {
 		Accessor<INDEX, T, REST ...>::Set(*this, _p1);
-}
+    }
 
-template <class T, class ... REST>
-template <unsigned int INDEX>
-inline const auto & Tuple<T, REST ...>::Get() const
-{
+    template <class T, class ... REST>
+    template <unsigned int INDEX>
+    inline const auto & Tuple<T, REST ...>::Get() const
+    {
 		return Accessor<INDEX, T, REST ...>::Get(*this);
-}
+    }
 
-template <class T, class ... REST>
-template <unsigned int INDEX>
-inline const auto & Tuple<T, REST ...>::GetSubTuple() const
-{
+    template <class T, class ... REST>
+    template <unsigned int INDEX>
+    inline const auto & Tuple<T, REST ...>::GetSubTuple() const
+    {
 		return Accessor<INDEX, T, REST ...>::GetSubTuple(*this);
-}
+    }
 
-template <class T, class ... REST>
-template <unsigned int INDEX>
-inline auto & Tuple<T, REST ...>::GetSubTuple()
-{
+    template <class T, class ... REST>
+    template <unsigned int INDEX>
+    inline auto & Tuple<T, REST ...>::GetSubTuple()
+    {
 		return Accessor<INDEX, T, REST ...>::GetSubTuple(*this);
-}
+    }
 
-template <class T, class ... REST>
-template <unsigned int ... INDICES>
-inline auto Tuple<T, REST ...>::MakeByIndices(const Indices<INDICES ...> &) const
-{
+    template <class T, class ... REST>
+    template <unsigned int ... INDICES>
+    inline auto Tuple<T, REST ...>::MakeByIndices(const Indices<INDICES ...> &) const
+    {
 		return Tuple<MemberTypeIndexed<INDICES> ...>(Get<INDICES>() ...);
-}
+    }
 
-template <class T, class ... REST>
-template <unsigned int A, unsigned int B>
-inline auto Tuple<T, REST ...>::MakeByRange() const
-{
+    template <class T, class ... REST>
+    template <unsigned int A, unsigned int B>
+    inline auto Tuple<T, REST ...>::MakeByRange() const
+    {
 		return MakeByIndices(typename Range<A, B>::Indices());
-}
+    }
 
-template <class T, class ... REST>
-template <class CALLABLE, unsigned int ... INDICES>
-inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &) const
-{
+    template <class T, class ... REST>
+    template <class CALLABLE, unsigned int ... INDICES>
+    inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function, const Indices<INDICES ...> &) const
+    {
 		return _function(Get<INDICES>()...);
-}
+    }
 
-template <class T, class ... REST>
-template <class CALLABLE>
-inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) const
-{
+    template <class T, class ... REST>
+    template <class CALLABLE>
+    inline auto Tuple<T, REST ...>::Invoke(CALLABLE & _function) const
+    {
 		return Invoke(_function, typename Range<0, mIndex>::Indices());
-}
+    }
 
 // template<class T> Tuple<T> specialization
 
-template <class T>
-Tuple<T>::Tuple()
-{
-}
+    template <class T>
+    Tuple<T>::Tuple()
+    {
+    }
 
-template <class T>
-Tuple<T>::Tuple(const Tuple & _src):
+    template <class T>
+    Tuple<T>::Tuple(const Tuple & _src):
 		mMember(_src.mMember)
-{
-}
+    {
+    }
 
-template <class T>
-Tuple<T>::Tuple(Tuple && _src):
+    template <class T>
+    Tuple<T>::Tuple(Tuple && _src):
 		mMember(std::move(_src.mMember))
-{
-}
+    {
+    }
 
-template <class T>
-Tuple<T>::Tuple(const T & _p1):
+    template <class T>
+    Tuple<T>::Tuple(const T & _p1):
 		mMember(_p1)
-{
-}
+    {
+    }
 
-template <class T>
-inline auto & Tuple<T>::operator =(const Tuple & _src)
-{
-		mMember = _src.mMember;
-}
+    template <class T>
+    inline auto & Tuple<T>::operator =(const Tuple & _src)
+    {
+        mMember = _src.mMember;
+        return *this;
+    }
 
-template <class T>
-inline auto & Tuple<T>::operator =(Tuple && _src)
-{
-		mMember = std::move(_src.mMember);
-}
+    template <class T>
+    inline auto & Tuple<T>::operator =(Tuple && _src)
+    {
+        mMember = std::move(_src.mMember);
+        return *this;
+    }
 
-template <class T>
-inline Tuple<T> * Tuple<T>::Next()
-{
+    template <class T>
+    inline Tuple<T> * Tuple<T>::Next()
+    {
 		return nullptr;
-}
+    }
 
-template <class T>
-inline const Tuple<T> * Tuple<T>::Next() const
-{
+    template <class T>
+    inline const Tuple<T> * Tuple<T>::Next() const
+    {
 		return nullptr;
-}
+    }
 
-template <class T>
-inline void Tuple<T>::Set(const Tuple & _src)
-{
+    template <class T>
+    inline void Tuple<T>::Set(const Tuple & _src)
+    {
 		mMember = _src.mMember;
-}
+    }
 
-template <class T>
-inline void Tuple<T>::Set(const T & _p1)
-{
+    template <class T>
+    inline void Tuple<T>::Set(const T & _p1)
+    {
 		mMember = _p1;
-}
+    }
 
-template <class T>
-inline void Tuple<T>::Get(T & _p1) const
-{
+    template <class T>
+    inline void Tuple<T>::Get(T & _p1) const
+    {
 		_p1 = mMember;
-}
+    }
 
-template <class T>
-inline const auto & Tuple<T>::Get() const
-{
+    template <class T>
+    inline const auto & Tuple<T>::Get() const
+    {
 		return mMember;
-}
+    }
 
-template <class T>
-template <unsigned int INDEX>
-inline void Tuple<T>::Set(const MemberTypeIndexed<INDEX> & _p1)
-{
+    template <class T>
+    template <unsigned int INDEX>
+    inline void Tuple<T>::Set(const MemberTypeIndexed<INDEX> & _p1)
+    {
 		Accessor<INDEX, T>::Set(*this, _p1);
-}
+    }
 
-template <class T>
-template <unsigned int INDEX>
-inline const auto & Tuple<T>::Get() const
-{
+    template <class T>
+    template <unsigned int INDEX>
+    inline const auto & Tuple<T>::Get() const
+    {
 		return Accessor<INDEX, T>::Get(*this);
-}
+    }
 
-template <class T>
-template <unsigned int INDEX>
-inline const auto & Tuple<T>::GetSubTuple() const
-{
+    template <class T>
+    template <unsigned int INDEX>
+    inline const auto & Tuple<T>::GetSubTuple() const
+    {
 		return Accessor<INDEX, T>::GetSubTuple(*this);
-}
+    }
 
-template <class T>
-template <unsigned int INDEX>
-inline auto & Tuple<T>::GetSubTuple()
-{
+    template <class T>
+    template <unsigned int INDEX>
+    inline auto & Tuple<T>::GetSubTuple()
+    {
 		return Accessor<INDEX, T>::GetSubTuple(*this);
-}
+    }
 
-template <class T>
-template <unsigned int ... INDICES>
-inline auto Tuple<T>::MakeByIndices(const Indices<INDICES ...> &) const
-{
+    template <class T>
+    template <unsigned int ... INDICES>
+    inline auto Tuple<T>::MakeByIndices(const Indices<INDICES ...> &) const
+    {
 		return Tuple<MemberTypeIndexed<INDICES> ...>(Get<INDICES>() ...);
-}
+    }
 
-template <class T>
-template <unsigned int A, unsigned int B>
-inline auto Tuple<T>::MakeByRange() const
-{
+    template <class T>
+    template <unsigned int A, unsigned int B>
+    inline auto Tuple<T>::MakeByRange() const
+    {
 		return MakeByIndices(typename Range<A, B>::Indices());
-}
+    }
 
-template <class T>
-template <class CALLABLE, unsigned int INDEX>
-inline auto Tuple<T>::Invoke(CALLABLE & _function) const
-{
+    template <class T>
+    template <class CALLABLE, unsigned int INDEX>
+    inline auto Tuple<T>::Invoke(CALLABLE & _function) const
+    {
 		return _function(mMember);
-}
+    }
 
 } // namespace tuple
 

@@ -101,7 +101,10 @@ namespace tuple
 
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
-		inline auto MakeByIndices(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
+		inline auto MakeByIndices(const Indices<INDICES ...> & _indices) const;
+
+		template <unsigned int ... INDICES>
+        auto MakeByIndices() const { return MakeByIndices(Indices<INDICES ...>{}); }
 
 		/// creates new tuple with members from this tuple, ranged by A,B indices
 		template <unsigned int A, unsigned int B>
@@ -191,7 +194,10 @@ namespace tuple
 
 		/// creates new tuple with members from this tuple, indexed by INDICES template parameter pack
 		template <unsigned int ... INDICES>
-		inline auto MakeByIndices(const Indices<INDICES ...> & _indices = Indices<INDICES ...>()) const;
+		inline auto MakeByIndices(const Indices<INDICES ...> & _indices) const;
+
+		template <unsigned int ... INDICES>
+        auto MakeByIndices() const { return MakeByIndices(Indices<INDICES ...>{}); }
 
 		/// creates new tuple with members from this tuple, ranged by A,B indices
 		template <unsigned int A, unsigned int B>

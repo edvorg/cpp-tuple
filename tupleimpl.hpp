@@ -83,15 +83,12 @@ namespace tuple
 		/// sets first item
 		inline void Set(const T & _p1);
 
-		/// gets first item
-		inline const auto & Get() const;
-
 		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
 		inline void Set(const MemberTypeIndexed<INDEX> & _p1);
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
-		template <unsigned int INDEX>
+		template <unsigned int INDEX = 0>
 		inline const auto & Get() const;
 
 		/// returns indexed subtuple of this tuple
@@ -176,15 +173,12 @@ namespace tuple
 		/// stores all items in corresponding arguments
 		inline void Get(T & _p1) const;
 
-		/// gets first item
-		inline const auto & Get() const;
-
 		/// sets element by INDEX. typesafe. if index is out of bounds, returns error at compile time
 		template <unsigned int INDEX>
 		inline void Set(const MemberTypeIndexed<INDEX> & _p1);
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
-		template <unsigned int INDEX>
+		template <unsigned int INDEX = 0>
 		inline const auto & Get() const;
 
 		/// returns indexed subtuple of this tuple
@@ -295,12 +289,6 @@ namespace tuple
     inline void Tuple<T, REST ...>::Set(const T & _p1)
     {
 		mMember = _p1;
-    }
-
-    template <class T, class ... REST>
-    inline const auto & Tuple<T, REST ...>::Get() const
-    {
-		return mMember;
     }
 
     template <class T, class ... REST>
@@ -426,12 +414,6 @@ namespace tuple
     inline void Tuple<T>::Get(T & _p1) const
     {
 		_p1 = mMember;
-    }
-
-    template <class T>
-    inline const auto & Tuple<T>::Get() const
-    {
-		return mMember;
     }
 
     template <class T>

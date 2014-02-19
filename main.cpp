@@ -82,10 +82,10 @@ int main(int _argc, char ** _argv)
 
 		auto t1 = MakeTuple(1, 'a', 3.14, std::string("hello world"));
 
-		std::cout << t1.Get() << std::endl;
-		std::cout << t1.Next()->Get() << std::endl;
-		std::cout << t1.Next()->Next()->Get() << std::endl;
-		std::cout << t1.Next()->Next()->Next()->Get() << std::endl;
+		std::cout << t1.GetFirst() << std::endl;
+		std::cout << t1.Next()->GetFirst() << std::endl;
+		std::cout << t1.Next()->Next()->GetFirst() << std::endl;
+		std::cout << t1.Next()->Next()->Next()->GetFirst() << std::endl;
 		std::cout << std::endl;
 
 		int v0;

@@ -88,8 +88,10 @@ namespace tuple
 		inline void Set(const MemberTypeIndexed<INDEX> & _p1);
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
-		template <unsigned int INDEX = 0>
+		template <unsigned int INDEX>
 		inline const auto & Get() const;
+
+        const auto & GetFirst() const { return mMember; }
 
 		/// returns indexed subtuple of this tuple
 		template <unsigned int INDEX>
@@ -181,8 +183,10 @@ namespace tuple
 		inline void Set(const MemberTypeIndexed<INDEX> & _p1);
 
 		/// gets element by INDEX. typesafe. if index is out of bounds, return error at compile time
-		template <unsigned int INDEX = 0>
+		template <unsigned int INDEX>
 		inline const auto & Get() const;
+
+        const auto & GetFirst() const { return mMember; }
 
 		/// returns indexed subtuple of this tuple
 		template <unsigned int INDEX>

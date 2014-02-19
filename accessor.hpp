@@ -38,17 +38,17 @@ public:
 				Accessor<INDEX - 1, REST ...>::Set(*_tuple.Next(), _val);
 		}
 
-		inline static const typename Tuple<T, REST ...>::template MemberTypeIndexed<INDEX> & Get(const Tuple<T, REST ...> & _tuple)
+		inline static const auto & Get(const Tuple<T, REST ...> & _tuple)
 		{
 				return Accessor<INDEX - 1, REST ...>::Get(*_tuple.Next());
 		}
 
-		inline static const typename Tuple<T, REST ...>::template SubTupleTypeIndexed<INDEX> & GetSubTuple(const Tuple<T, REST ...> & _tuple)
+		inline static const auto & GetSubTuple(const Tuple<T, REST ...> & _tuple)
 		{
 				return Accessor<INDEX - 1, REST ...>::GetSubTuple(*_tuple.Next());
 		}
 
-		inline static typename Tuple<T, REST ...>::template SubTupleTypeIndexed<INDEX> & GetSubTuple(Tuple<T, REST ...> & _tuple)
+		inline static auto & GetSubTuple(Tuple<T, REST ...> & _tuple)
 		{
 				return Accessor<INDEX - 1, REST ...>::GetSubTuple(*_tuple.Next());
 		}
@@ -63,17 +63,17 @@ public:
 				_tuple.Set(_val);
 		}
 
-		inline static const typename Tuple<T, REST ...>::template MemberTypeIndexed<0> & Get(const Tuple<T, REST ...> & _tuple)
+		inline static const auto & Get(const Tuple<T, REST ...> & _tuple)
 		{
-				return _tuple.Get();
+            return _tuple.GetFirst();
 		}
 
-		inline static const typename Tuple<T, REST ...>::template SubTupleTypeIndexed<0> & GetSubTuple(const Tuple<T, REST ...> & _tuple)
+		inline static const auto & GetSubTuple(const Tuple<T, REST ...> & _tuple)
 		{
 				return _tuple;
 		}
 
-		inline static typename Tuple<T, REST ...>::template SubTupleTypeIndexed<0> & GetSubTuple(Tuple<T, REST ...> & _tuple)
+		inline static auto & GetSubTuple(Tuple<T, REST ...> & _tuple)
 		{
 				return _tuple;
 		}
